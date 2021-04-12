@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/common-marvel/kotlin/spring-boot-test-helper-kotlin/images/download.svg?version=0.1.10) ](https://bintray.com/common-marvel/kotlin/spring-boot-test-helper-kotlin/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/common-marvel/kotlin/spring-boot-test-helper-kotlin/images/download.svg) ](https://bintray.com/common-marvel/kotlin/spring-boot-test-helper-kotlin/_latestVersion)
 
 # spring-boot-test-helper-kotlin
 
