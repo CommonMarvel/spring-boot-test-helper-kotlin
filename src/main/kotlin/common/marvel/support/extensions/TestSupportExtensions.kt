@@ -9,7 +9,9 @@ import common.marvel.helper.extension.jsonStringToMap
 import common.marvel.helper.extension.toJsonString
 import common.marvel.helper.global.Global
 import io.kotlintest.Failures
+import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
+import java.lang.reflect.InvocationTargetException
 
 val prettyPrinter = DefaultPrettyPrinter().apply {
     DefaultIndenter("  ", "\n").also {
@@ -19,10 +21,14 @@ val prettyPrinter = DefaultPrettyPrinter().apply {
 }
 
 inline fun errCodeMatches(errorCode: ErrorCode, block: () -> Unit) {
-    val businessException = shouldThrow<BusinessException> { block() }
-    if (businessException.errorCode != errorCode) {
-        throw Failures.failure("Expected errorCode $errorCode but got ${businessException.errorCode}")
+    val expectedExceptionClass = BusinessException::class
+    val exception = shouldThrow<Exception> { block() }
+    val actualErrorCode = when {
+        exception is BusinessException -> exception.errorCode
+        exception is InvocationTargetException && exception.cause is BusinessException -> (exception.cause as BusinessException).errorCode // Get errorCode of BusinessException thrown by invoked Method
+        else -> throw Failures.failure("Expected exception ${expectedExceptionClass.qualifiedName} but a ${exception::class.simpleName} was thrown instead.", exception)
     }
+    actualErrorCode shouldBe errorCode
 }
 
 fun Any?.toMatchSnapshot(
